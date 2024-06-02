@@ -26,6 +26,13 @@ const NavBar: React.FC = () => {
                         <Link to="/customers">Customers</Link>
                     </Button>
                 </Box>
+                <Box sx={{ flexGrow: 1, display: {xs:'none', md:'flex'} }}>
+                    <Button 
+                        key="Orders" 
+                        sx={{ color: 'white', my:2, display: 'block'}}>
+                        <Link to="/orders">Orders</Link>
+                    </Button>
+                </Box>
             </Toolbar>
         </AppBar>
     );

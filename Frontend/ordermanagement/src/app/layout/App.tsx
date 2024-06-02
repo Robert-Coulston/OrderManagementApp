@@ -5,6 +5,7 @@ import CustomersDashboard from "../../features/customers/customersDashboard/Cust
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import HomePage from "../../features/home/HomePage";
+import OrderDashboard from "../../features/orders/ordersDashboard/OrdersDashboard";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage/>} />
             <Route path="/customers" element={<CustomersDashboard />} />
+            <Route path="/orders" element={<OrderDashboard />} />
           </Route>
         </Routes>
       </BrowserRouter>

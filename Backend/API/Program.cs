@@ -3,7 +3,6 @@ using Core.Interfaces;
 using GraphQL.Server.Ui.Voyager;
 using Infrastructure.Data;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var allowSpecificOrigins = "_allowSpecificOrigins";

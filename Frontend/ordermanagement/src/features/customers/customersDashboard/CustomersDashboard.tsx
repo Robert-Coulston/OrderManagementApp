@@ -22,6 +22,5 @@ export default function CustomersDashboard() {
                <CustomerList customers={customers} />
             </Grid>
         </Grid>
-
     )
 }
