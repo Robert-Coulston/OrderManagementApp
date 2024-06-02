@@ -1,5 +1,7 @@
 import React from 'react';
-import { useGetCustomersQuery } from '../../../graphql/generated/schema';
+import { Customer, useGetCustomersQuery } from '../../../graphql/generated/schema';
+import { Grid, Typography } from '@mui/material';
+import CustomerList from '../customersList/CustomerList';
 
 
 export default function CustomersDashboard() {
@@ -9,31 +11,17 @@ export default function CustomersDashboard() {
     if (error) return <div>Error: {error.message}</div>;
     if (!customersData) return <div>Error with customer data</div>;
 
+    const customers = customersData.customers as Customer[];
+
     return (
-        <div>
-            <h1>Customers</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Contact Number</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {customersData.customers.map(customer => (
-                        <tr key={customer?.id}>
-                            <td>{customer?.firstName}</td>
-                            <td>{customer?.lastName}</td>
-                            <td>{customer?.contactNumber}</td>
-                            <td>{customer?.email}</td>
-                            <td>{customer?.address?.addressLine1}, {customer.address?.addressLine2}, {customer.address?.city}, {customer.address?.state}, {customer.address?.country}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Typography component='div' variant='h5' display='block' gutterBottom align='center'>Customers List</Typography>
+            </Grid>
+            <Grid item xs={12}>
+               <CustomerList customers={customers} />
+            </Grid>
+        </Grid>
+
     )
 }
