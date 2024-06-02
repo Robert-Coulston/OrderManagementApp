@@ -1,2 +1,3 @@
 # OrderManagementApp
-a fullstack app to maintain curstomers and orders
+a fullstack app to maintain customers and orders
+uses graphql for data management
