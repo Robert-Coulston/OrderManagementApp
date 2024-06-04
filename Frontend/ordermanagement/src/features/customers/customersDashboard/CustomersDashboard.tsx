@@ -2,13 +2,15 @@ import React from 'react';
 import { Customer, useGetCustomersQuery } from '../../../graphql/generated/schema';
 import { Grid, Typography } from '@mui/material';
 import CustomerList from '../customersList/CustomerList';
+import OmLoading from '../../../components/elements/OmLoading';
+import OmAlert from '../../../components/elements/OmAlert';
 
 
 export default function CustomersDashboard() {
     const {data: customersData, loading, error} = useGetCustomersQuery();
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (loading) return <OmLoading />;
+    if (error) return <OmAlert message={error.message} />;
     if (!customersData) return <div>Error with customer data</div>;
 
     const customers = customersData.customers as Customer[];

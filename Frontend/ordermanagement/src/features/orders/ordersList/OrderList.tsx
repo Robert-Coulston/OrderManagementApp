@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
-import { AgGridReact } from "ag-grid-react";
+import React, { useState } from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { Order } from "../../../graphql/generated/schema";
 import { ColDef } from "ag-grid-community";
+import OmGrid from "../../../components/elements/OmGrid";
 
 interface OrderListProps {
   orders: Order[];
@@ -22,22 +22,8 @@ const OrderList = ({ orders }: OrderListProps) => {
     {field: "status"}
   ] as ColDef[]);
 
-  const defaultColDef = useMemo(
-    () => ({
-      sortable: true,
-      filter: true,
-      flex: 1,
-    }),
-    []
-  );
-
   return (
-    <div className="ag-theme-alpine" style={{ height:500, width:'100%'}}>
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={orders}
-          defaultColDef={defaultColDef}></AgGridReact>
-    </div>
+    <OmGrid rowData={orders} columnDefs={columnDefs} />
   )
 
 };
