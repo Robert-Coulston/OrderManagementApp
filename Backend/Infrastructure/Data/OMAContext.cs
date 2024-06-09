@@ -19,8 +19,8 @@ namespace Infrastructure.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var address1 = new Address { Id = 1, CustomerId = 1, AddressLine1 = "123 Main St", City = "New York", State = "NY", Country = "USA" };
-            var address2 = new Address { Id = 2, CustomerId = 2, AddressLine1 = "456 Main St", City = "Los Angeles", State = "CA", Country = "USA" };
+            var address1 = new Address { Id = 1, CustomerId = 1, AddressLine1 = "123 Main St", City = "New York", State = "NY", Country = "US" };
+            var address2 = new Address { Id = 2, CustomerId = 2, AddressLine1 = "456 Main St", City = "Los Angeles", State = "CA", Country = "US" };
 
             modelBuilder.Entity<Address>().HasData(
                 address1,

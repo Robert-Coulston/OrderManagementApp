@@ -1,5 +1,5 @@
 query GetCustomerById($id: Int!) {
-  customers (where: {id: { eq: $id}}) {
+  customers (where: { id: { eq: $id } }) {
     id
     firstName
     lastName

@@ -386,7 +386,7 @@ export type GetOrderByIdQueryResult = Apollo.QueryResult<GetOrderByIdQuery, GetO
 export const GetOrdersDocument = gql`
     query GetOrders {
   orders {
-    idG
+    id
     orderDate
     description
     totalAmount
