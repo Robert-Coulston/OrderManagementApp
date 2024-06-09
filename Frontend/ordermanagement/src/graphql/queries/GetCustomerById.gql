@@ -1,5 +1,5 @@
 query GetCustomerById($id: Int!) {
-  customers (where: { id: { eq: $id } }) {
+  customers(where: { id: { eq: $id } }) {
     id
     firstName
     lastName
@@ -21,6 +21,13 @@ query GetCustomerById($id: Int!) {
       isDelivery
       status
       otherNotes
+      customer {
+        id
+        firstName
+        lastName
+        contactNumber
+        email
+      }
     }
   }
 }
