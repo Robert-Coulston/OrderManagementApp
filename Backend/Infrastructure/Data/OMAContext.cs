@@ -37,10 +37,10 @@ namespace Infrastructure.Data
 
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, CustomerId = 1, OrderDate = DateTime.Now, Description = "order 123", Status = Status.Pending, TotalAmount = 100, DepositAmount = 50, IsDelivery = true, IsDeleted = false },
-                new Order { Id = 2, CustomerId = 2, OrderDate = DateTime.Now, Description = "order 456", Status = Status.Shipped, TotalAmount = 100, DepositAmount = 50, IsDelivery = true, IsDeleted = false },
-                new Order { Id = 3, CustomerId = 1, OrderDate = DateTime.Now, Description = "order 321", Status = Status.Pending, TotalAmount = 200, DepositAmount = 99, IsDelivery = true, IsDeleted = false },
-                new Order { Id = 4, CustomerId = 2, OrderDate = DateTime.Now, Description = "order 654", Status = Status.Shipped, TotalAmount = 200, DepositAmount = 99, IsDelivery = true, IsDeleted = false }
+                new Order { Id = 1, CustomerId = 1, OrderDate = DateTime.Now, Description = "order 123", Status = Status.PENDING, TotalAmount = 100, DepositAmount = 50, IsDelivery = true, IsDeleted = false },
+                new Order { Id = 2, CustomerId = 2, OrderDate = DateTime.Now, Description = "order 456", Status = Status.SHIPPED, TotalAmount = 100, DepositAmount = 50, IsDelivery = true, IsDeleted = false },
+                new Order { Id = 3, CustomerId = 1, OrderDate = DateTime.Now, Description = "order 321", Status = Status.PENDING, TotalAmount = 200, DepositAmount = 99, IsDelivery = true, IsDeleted = false },
+                new Order { Id = 4, CustomerId = 2, OrderDate = DateTime.Now, Description = "order 654", Status = Status.SHIPPED, TotalAmount = 200, DepositAmount = 99, IsDelivery = true, IsDeleted = false }
             );
         }
 
