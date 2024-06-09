@@ -1,7 +1,7 @@
 import React from "react";
 import { Scalars, Status } from "../../../graphql/generated/schema";
 import * as yup from "yup"; // Import the 'yup' package
-import { formatDatePicker } from "../../../utlls/DateFormatter";
+import { formatDatePicker } from "../../../utils/DateFormatter";
 import { Container, Grid } from "@mui/material";
 import { Form, Formik } from "formik";
 import OmSelect from "../../../components/formsUI/OmSelect";
@@ -9,6 +9,7 @@ import OmDatePicker from "../../../components/formsUI/OmDatePicker";
 import OmTextField from "../../../components/formsUI/OmTextField";
 import OmCheckbox from "../../../components/formsUI/OmCheckbox";
 import OmSubmitButton from "../../../components/formsUI/OmSubmitButton";
+import statuses from "../../../data/statuses.json";
 
 export interface OrderFormValues {
   id?: number;
@@ -79,7 +80,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
                 <OmSelect
                   name="status"
                   otherProps={{ label: "Order Status" }}
-                  options={Status}
+                  options={statuses}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -97,7 +98,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
               <Grid item xs={12}>
                 <OmTextField
                   name="otherNotes"
-                  otherProps={{ label: "Other Notes" }}
+                  otherProps={{
+                    label: "Other Notes",
+                    multiline: true,
+                    rows: 4,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -114,21 +119,17 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
               </Grid>
               <Grid item xs={12}>
                 <OmCheckbox
-                  name="delivery"
+                  name="isDelivery"
                   legend="Include delivery"
                   label="Include delivery"
                   otherProps={{ label: "Deposit Included" }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <OmSubmitButton
-                otherProps={{}}
-                >
-                {!order.id ? "Add Order" : "Update Orders"}
+                <OmSubmitButton otherProps={{}}>
+                  {!order.id ? "Add Order" : "Update Orders"}
                 </OmSubmitButton>
               </Grid>
-
-
             </Grid>
           </Form>
         </Formik>

@@ -45,12 +45,15 @@ const OrderPage: React.FC<OrderProps> = () => {
     order: orderData!.orders[0] as Order,
   });
 
+  const customer = orderData!.orders[0].customer;
+
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={2}></Grid>
         <Grid item xs={8}>
-          <OmHeader header="Order Details" />
+          <OmHeader header={`Order Details: ${customer?.firstName} ${customer?.lastName}`} />
+          {/* <OmHeader header="Order Details" /> */}
         </Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={12}>
