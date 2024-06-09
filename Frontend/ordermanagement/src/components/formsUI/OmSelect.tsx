@@ -9,6 +9,7 @@ type OmSelectProps = {
 };
 
 const OmSelect: React.FC<OmSelectProps> = ({ name, options, otherProps }) => {
+
   const { setFieldValue } = useFormikContext();
   const [field, meta] = useField(name);
 
@@ -41,7 +42,7 @@ const OmSelect: React.FC<OmSelectProps> = ({ name, options, otherProps }) => {
         );
       })}
     </TextField>
-  );
-};
+  )
+}
 
 export default OmSelect;
