@@ -2,13 +2,16 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Customer,
+  Order,
   useGetCustomerByIdQuery,
 } from "../../graphql/generated/schema";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import CustomerForm from "./customerForms/CustomerForm";
 import { CustomerFormValues } from "./customerForms/CustomerForm"; // Import the CustomerFormValues type
 import OmLoading from "../../components/elements/OmLoading";
 import OmAlert from "../../components/elements/OmAlert";
+import OmHeader from "../../components/elements/OmHeader";
+import OrderList from "../orders/ordersList/OrderList";
 
 type CustomerProps = {};
 
@@ -48,25 +51,23 @@ const CustomerPage: React.FC<CustomerProps> = () => {
   const customer: CustomerFormValues = mapCustomerToFormValues(
     { customer: customerData!.customers[0] as Customer }  );
 
+  const customerOrders = customerData!.customers[0].orders as Order[];
+
 
   return (
     <Container>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={2}></Grid>
         <Grid item xs={8}>
-          <Typography
-            component="div"
-            variant="h5"
-            display="block"
-            gutterBottom
-            align="center"
-          >
-            Customer Details
-          </Typography>
+          <OmHeader header="Customer Details" />
         </Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={12}>
           <CustomerForm customer={customer} />
+        </Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={12}>
+          <OrderList orders={customerOrders} />
         </Grid>
       </Grid>
     </Container>
