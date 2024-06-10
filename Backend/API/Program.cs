@@ -19,7 +19,8 @@ builder.Services.AddCors(options => options.AddPolicy(allowSpecificOrigins, buil
 
 builder.Services.AddDbContextFactory<OMAContext>(options =>
 {
-    options.UseInMemoryDatabase("InMemoryDb");
+    // options.UseInMemoryDatabase("InMemoryDb");
+    options.UseSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -71,6 +72,15 @@ app.UseGraphQLVoyager("/graphql-voyager", new VoyagerOptions
 {
     GraphQLEndPoint = "/graphql"
 });
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<OMAContext>>();
+    using (var context = dbContextFactory.CreateDbContext())
+    {
+        context.Database.Migrate();
+    }
+}
 
 
 app.Run();
