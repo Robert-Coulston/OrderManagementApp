@@ -2,4 +2,7 @@ bin
 obj
 build
 wwwroot
+
+*.db-shm
+*.db-wal
                                                                                                                       
