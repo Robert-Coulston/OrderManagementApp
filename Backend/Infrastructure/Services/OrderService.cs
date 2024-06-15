@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Models;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +18,55 @@ namespace Infrastructure.Services
         {
             _contextFactory = contextFactory;
         }
+
+        public async Task<Order> AddOrUpdateOrderAsync(OrderModel orderModel)
+        {
+            var context = _contextFactory.CreateDbContext();
+            
+            Order order = new Order();
+
+            var customer = await context.Customers.FirstOrDefaultAsync(c => c.Id == orderModel.CustomerId)
+                          ?? throw new Exception("Customer not found");
+
+            if (!orderModel.Id.HasValue)
+            {
+                order.CustomerId = orderModel.CustomerId;
+                order.OrderDate = orderModel.OrderDate;
+                order.DepositAmount = orderModel.DepositAmount;
+                order.TotalAmount = orderModel.TotalAmount;
+                order.Description = orderModel.Description;
+                order.IsDelivery = orderModel.IsDelivery;
+                order.Status = orderModel.Status;
+                order.OtherNotes = orderModel.OtherNotes;
+
+                await context.Orders.AddAsync(order);
+            }
+            else
+            {
+                order = await context.Orders
+                    .Include(o => o.Customer)
+                    .FirstOrDefaultAsync(o => o.Id == orderModel.Id)
+                    ?? throw new Exception("Order not found");
+
+                order.CustomerId = orderModel.CustomerId;
+                order.OrderDate = orderModel.OrderDate;
+                order.DepositAmount = orderModel.DepositAmount;
+                order.TotalAmount = orderModel.TotalAmount;
+                order.Description = orderModel.Description;
+                order.IsDelivery = orderModel.IsDelivery;
+                order.Status = orderModel.Status;
+                order.OtherNotes = orderModel.OtherNotes;
+
+                context.Orders.Update(order);
+            }
+
+            await context.SaveChangesAsync();
+            return order;
+        }
+
         public IQueryable<Order> GetOrders()
         {
             var context = _contextFactory.CreateDbContext();
-            context.Database.EnsureCreated();
             return context.Orders.Include(o => o.Customer).Where(o => !o.IsDeleted);
         }
     }
