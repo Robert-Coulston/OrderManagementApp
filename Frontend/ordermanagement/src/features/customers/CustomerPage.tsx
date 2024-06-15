@@ -33,21 +33,6 @@ const CustomerPage: React.FC<CustomerProps> = () => {
   if (customerLoading) return <OmLoading />;
   if (customerError) return <OmAlert message={customerError.message} />;
 
-  function mapCustomerToFormValues({ customer }: { customer: Customer; }): CustomerFormValues {
-    return {
-      id: customer.id,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      email: customer.email,
-      contactNumber: customer.contactNumber,
-      addressLine1: customer.address?.addressLine1,
-      addressLine2: customer.address?.addressLine2,
-      city: customer.address?.city,
-      state: customer.address?.state,
-      country: customer.address?.country,
-    } as CustomerFormValues;
-  }
-
   const customer: CustomerFormValues = mapCustomerToFormValues(
     { customer: customerData!.customers[0] as Customer }  );
 
@@ -73,5 +58,21 @@ const CustomerPage: React.FC<CustomerProps> = () => {
     </Container>
   );
 };
+
+export function mapCustomerToFormValues({ customer }: { customer: Customer; }): CustomerFormValues {
+  return {
+    id: customer.id,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+    email: customer.email,
+    contactNumber: customer.contactNumber,
+    addressLine1: customer.address?.addressLine1,
+    addressLine2: customer.address?.addressLine2,
+    city: customer.address?.city,
+    state: customer.address?.state,
+    country: customer.address?.country,
+  } as CustomerFormValues;
+}
+
 
 export default CustomerPage;
