@@ -1,12 +1,19 @@
 import React from "react";
 import * as yup from "yup"; // Add this line to import the 'yup' package
 // import { useNavigate } from "react-router-dom";
-import { Container, Grid, Typography } from "@mui/material";
+import { Alert, Container, Grid, Snackbar, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import OmTextField from "../../../components/formsUI/OmTextField";
 import OmSelect from "../../../components/formsUI/OmSelect";
 import OmSubmitButton from "../../../components/formsUI/OmSubmitButton";
 import countries from "../../../data/countries.json";
+import {
+  Customer,
+  useAddOrUpdateCustomerMutation,
+} from "../../../graphql/generated/schema";
+import OmLoading from "../../../components/elements/OmLoading";
+import { useNavigate } from "react-router-dom";
+import { mapCustomerToFormValues } from "../CustomerPage";
 
 export interface CustomerFormValues {
   id: number;
@@ -38,8 +45,8 @@ const FORM_VALIDATION: yup.Schema<CustomerFormValues> = yup.object().shape({
 });
 
 const CustomerForm: React.FC<CustomerFormProps> = ({ customer }) => {
-  // const [open, setOpen] = React.useState(false);
-  // const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const INITIAL_FORM_STATE: CustomerFormValues = {
     id: customer.id,
@@ -54,16 +61,62 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ customer }) => {
     country: customer.country || "",
   };
 
-  const addOrUpdateCustomer = async (values: CustomerFormValues) => {
-    console.log(values);
+  const [
+    addOrUpdateCustomer,
+    { loading: addOrUpdateCustomerLoading, error: addOrUpdateCustomerError },
+  ] = useAddOrUpdateCustomerMutation();
+
+  const handleClose = (event: any) => {
+   
+    if (event?.reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
+
+  const addOrUpdateCustomerDetails = async (values: CustomerFormValues) => {
+    const response = await addOrUpdateCustomer({
+      variables: { customerModel: values },
+    });
+    setOpen(true);
+
+    const customer = response.data?.addOrUpdateCustomer as Customer;
+    const customerFormValues = mapCustomerToFormValues({ customer: customer });
+
+    if (customerFormValues?.id) {
+      navigate(`/customers/${customerFormValues.id}`);
+    }
+  };
+
+  if (addOrUpdateCustomerLoading) {return <><OmLoading/></>;}
+
+  if (addOrUpdateCustomerError) {
+    return (
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={addOrUpdateCustomerError.message}
+      >
+        <Alert severity="error">{addOrUpdateCustomerError.message}</Alert>
+      </Snackbar>
+    );
+  }
 
   return (
     <Container>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity="success" sx={{ width: "100%" }}>
+          {customer.id
+            ? "Customer updated successfully"
+            : "Customer added successfully"}
+        </Alert>
+      </Snackbar>
       <div>
         <h2>Customer Form</h2>
         <Formik
-          onSubmit={addOrUpdateCustomer}
+          onSubmit={addOrUpdateCustomerDetails}
           initialValues={INITIAL_FORM_STATE}
           validationSchema={FORM_VALIDATION}
         >
@@ -119,10 +172,8 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ customer }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <OmSubmitButton
-                otherProps={{}}
-                >
-                {!customer.id ? "Add Customer" : "Update Customer"}
+                <OmSubmitButton otherProps={{}}>
+                  {!customer.id ? "Add Customer" : "Update Customer"}
                 </OmSubmitButton>
               </Grid>
             </Grid>

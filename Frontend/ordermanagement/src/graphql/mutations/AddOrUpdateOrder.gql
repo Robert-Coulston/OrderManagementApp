@@ -1,0 +1,20 @@
+mutation AddOrUpdateOrder ($orderModel: OrderModelInput!) {
+  addOrUpdateOrder ( orderModel: $orderModel) {
+    id
+    orderDate
+    depositAmount
+    totalAmount
+    customerId
+    description
+    isDelivery
+    status
+    otherNotes
+    customer {
+      id
+      firstName
+      lastName
+      contactNumber
+      email
+    }
+  }
+}
