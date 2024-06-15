@@ -4,6 +4,7 @@ using GraphQL.Server.Ui.Voyager;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using OrderManagementApp.API.GraphQLQueries;
 
 var allowSpecificOrigins = "_allowSpecificOrigins";
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
     .AddFiltering();
 
 var app = builder.Build();
