@@ -23,5 +23,8 @@
         "tab.activeBorder": "#ffffff",
         "tab.activeBorderTop": "#ffffff",
     },
-    "peacock.color": "#007fff"
+    "peacock.color": "#007fff",
+    "cSpell.words": [
+        "clickaway"
+    ]
 }

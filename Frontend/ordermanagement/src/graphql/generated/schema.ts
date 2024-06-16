@@ -270,7 +270,7 @@ export type GetOrderByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetOrderByIdQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: number, orderDate: any, description?: string | null, totalAmount: any, depositAmount: any, isDelivery: boolean, status: Status, otherNotes?: string | null, customer?: { __typename?: 'Customer', id: number, firstName?: string | null, lastName?: string | null, contactNumber?: string | null, email?: string | null } | null }> };
+export type GetOrderByIdQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: number, customerId: number, orderDate: any, description?: string | null, totalAmount: any, depositAmount: any, isDelivery: boolean, status: Status, otherNotes?: string | null, customer?: { __typename?: 'Customer', id: number, firstName?: string | null, lastName?: string | null, contactNumber?: string | null, email?: string | null } | null }> };
 
 export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -492,6 +492,7 @@ export const GetOrderByIdDocument = gql`
     query GetOrderById($id: Int!) {
   orders(where: {id: {eq: $id}}) {
     id
+    customerId
     orderDate
     description
     totalAmount
