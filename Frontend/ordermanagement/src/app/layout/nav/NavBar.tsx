@@ -39,6 +39,11 @@ const NavBar: React.FC = () => {
                   Orders
                 </Link>
               </Button>
+              <Button key="NewCustomer" sx={{ color: "white", my: 2, display: "block" }}>
+                <Link className="text-link" to="/customers/newCustomer">
+                  New Customer
+                </Link>
+              </Button>
             </Box>
           </Toolbar>
       </Container>
