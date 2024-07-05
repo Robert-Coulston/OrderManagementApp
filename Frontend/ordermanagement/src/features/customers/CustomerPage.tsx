@@ -5,7 +5,7 @@ import {
   Order,
   useGetCustomerByIdQuery,
 } from "../../graphql/generated/schema";
-import { Container, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import CustomerForm from "./customerForms/CustomerForm";
 import { CustomerFormValues } from "./customerForms/CustomerForm"; // Import the CustomerFormValues type
 import OmLoading from "../../components/elements/OmLoading";
@@ -33,11 +33,11 @@ const CustomerPage: React.FC<CustomerProps> = () => {
   if (customerLoading) return <OmLoading />;
   if (customerError) return <OmAlert message={customerError.message} />;
 
-  const customer: CustomerFormValues = mapCustomerToFormValues(
-    { customer: customerData!.customers[0] as Customer }  );
+  const customer: CustomerFormValues = mapCustomerToFormValues({
+    customer: customerData!.customers[0] as Customer,
+  });
 
   const customerOrders = customerData!.customers[0].orders as Order[];
-
 
   return (
     <Container>
@@ -51,15 +51,32 @@ const CustomerPage: React.FC<CustomerProps> = () => {
           <CustomerForm customer={customer} />
         </Grid>
         <Grid item xs={2}></Grid>
+        <Grid item xs={8}>
+          <OmHeader header="Orders" />
+        </Grid>
         <Grid item xs={12}>
           <OrderList orders={customerOrders} />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            fullWidth={true}
+            color="primary"
+            href={`/customers/${customerId}/newOrder`}
+          >
+            New Order
+          </Button>
         </Grid>
       </Grid>
     </Container>
   );
 };
 
-export function mapCustomerToFormValues({ customer }: { customer: Customer; }): CustomerFormValues {
+export function mapCustomerToFormValues({
+  customer,
+}: {
+  customer: Customer;
+}): CustomerFormValues {
   return {
     id: customer.id,
     firstName: customer.firstName,
@@ -73,6 +90,5 @@ export function mapCustomerToFormValues({ customer }: { customer: Customer; }): 
     country: customer.address?.country,
   } as CustomerFormValues;
 }
-
 
 export default CustomerPage;

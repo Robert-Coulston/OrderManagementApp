@@ -45,6 +45,8 @@ const FORM_VALIDATION: yup.Schema<CustomerFormValues> = yup.object().shape({
 });
 
 const CustomerForm: React.FC<CustomerFormProps> = ({ customer }) => {
+  console.log("CustomerForm: customer", customer);
+
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
@@ -76,6 +78,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ customer }) => {
   };
 
   const addOrUpdateCustomerDetails = async (values: CustomerFormValues) => {
+    console.log("addOrUpdateCustomerDetails: values", values);
     const response = await addOrUpdateCustomer({
       variables: { customerModel: values },
     });
