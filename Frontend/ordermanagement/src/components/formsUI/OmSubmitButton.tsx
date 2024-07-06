@@ -14,6 +14,7 @@ const OmSubmitButton: React.FC<OmSubmitButtonProps> = ({
   const { submitForm } = useFormikContext();
 
   const handleSubmit = () => {
+    console.log("OmSubmitButton:handleSubmit");
     submitForm();
   };
 

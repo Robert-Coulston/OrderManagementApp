@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { mapCustomerToFormValues } from "../CustomerPage";
 
 export interface CustomerFormValues {
-  id: number;
+  id?: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -33,7 +33,7 @@ interface CustomerFormProps {
 }
 
 const FORM_VALIDATION: yup.Schema<CustomerFormValues> = yup.object().shape({
-  id: yup.number().required("ID is required"),
+  id: yup.number(),
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
   email: yup.string().email("Email is not valid").required("Email is required"),
