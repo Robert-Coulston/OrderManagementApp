@@ -22,7 +22,7 @@ namespace Infrastructure.Services
         public async Task<Order> AddOrUpdateOrderAsync(OrderModel orderModel)
         {
             var context = _contextFactory.CreateDbContext();
-            
+
             Order order = new Order();
 
             var customer = await context.Customers.FirstOrDefaultAsync(c => c.Id == orderModel.CustomerId)
@@ -62,6 +62,26 @@ namespace Infrastructure.Services
 
             await context.SaveChangesAsync();
             return order;
+        }
+
+        public async Task<bool> DeleteAsync(int orderId)
+        {
+            var context = _contextFactory.CreateDbContext();
+            var order = await context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+
+            if (!order.IsDeleted)
+            {
+                order.IsDeleted = true;
+                context.Orders.Update(order);
+                return await context.SaveChangesAsync() > 0;
+            }
+
+            return false;
         }
 
         public IQueryable<Order> GetOrders()

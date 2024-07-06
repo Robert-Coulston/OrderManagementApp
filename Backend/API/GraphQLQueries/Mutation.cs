@@ -18,5 +18,18 @@ namespace OrderManagementApp.API.GraphQLQueries
             return await orderService.AddOrUpdateOrderAsync(orderModel);
 
         }
+        public async Task<bool> DeleteCustomer([Service] ICustomerService customerService, int customerId)
+        {
+            // Implement the DeleteAsync method in the ICustomerService interface.
+            return await customerService.DeleteAsync(customerId);
+
+        }
+
+        public async Task<bool> DeleteOrder([Service] IOrderService orderService, int orderId)
+        {
+            // Implement the DeleteAsync method in the ICustomerService interface.
+            return await orderService.DeleteAsync(orderId);
+
+        }
     }
 }

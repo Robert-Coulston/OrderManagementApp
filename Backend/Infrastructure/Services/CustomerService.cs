@@ -28,12 +28,12 @@ namespace Infrastructure.Services
                 .Include(c => c.Orders)
                 .Include(c => c.Address)
                 .Where(c => !c.IsDeleted);
-            
+
         }
         public async Task<Customer> AddOrUpdateCustomerAsync(CustomerModel customerModel)
         {
             var context = _contextFactory.CreateDbContext();
-            
+
             Customer customer = new Customer();
 
             if (!customerModel.Id.HasValue)
@@ -63,7 +63,7 @@ namespace Infrastructure.Services
                 {
                     throw new Exception("Customer not found");
                 }
-                
+
                 customer.FirstName = customerModel.FirstName;
                 customer.LastName = customerModel.LastName;
                 customer.ContactNumber = customerModel.ContactNumber;
@@ -73,17 +73,46 @@ namespace Infrastructure.Services
                 {
                     customer.Address = new Address();
                 }
-                customer.Address.AddressLine1 = customerModel.AddressLine1;
-                customer.Address.AddressLine2 = customerModel.AddressLine2;
-                customer.Address.City = customerModel.City;
-                customer.Address.State = customerModel.State;
-                customer.Address.Country = customerModel.Country;
+                else
+                {
+                    customer.Address.AddressLine1 = customerModel.AddressLine1;
+                    customer.Address.AddressLine2 = customerModel.AddressLine2;
+                    customer.Address.City = customerModel.City;
+                    customer.Address.State = customerModel.State;
+                    customer.Address.Country = customerModel.Country;
+                }
 
                 context.Customers.Update(customer);
             }
 
             await context.SaveChangesAsync();
             return customer;
+        }
+
+        public async Task<bool> DeleteAsync(int customerId)
+        {
+            var context = _contextFactory.CreateDbContext();
+
+            var customer = await context.Customers
+                .Include(c => c.Orders)
+                .FirstOrDefaultAsync(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                return false;
+            }
+
+            // Delete orders
+            if (customer.Orders != null)
+            {
+                foreach (var order in customer.Orders)
+                {
+                    order.IsDeleted = true;
+                }
+            }
+
+            customer.IsDeleted = true;
+            return (await context.SaveChangesAsync()) > 0;
         }
     }
 }
