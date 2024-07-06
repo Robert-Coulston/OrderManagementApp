@@ -24,10 +24,12 @@ namespace Infrastructure.Services
         {
             var context = _contextFactory.CreateDbContext();
 
-            return context.Customers
-                .Include(c => c.Orders)
+            var response = context.Customers
+                .Include(c => c.Orders.Where(o => !o.IsDeleted))
                 .Include(c => c.Address)
                 .Where(c => !c.IsDeleted);
+
+            return response;
 
         }
         public async Task<Customer> AddOrUpdateCustomerAsync(CustomerModel customerModel)
