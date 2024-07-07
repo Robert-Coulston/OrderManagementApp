@@ -3,6 +3,7 @@ obj
 build
 wwwroot
 
-*.db-shm
-*.db-wal
-                                                                                                                      
+*.db
+*.db*
+         
+                                                                                                             

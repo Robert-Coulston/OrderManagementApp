@@ -10,7 +10,8 @@ var allowSpecificOrigins = "_allowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddControllers();
+builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
+
 builder.Services.AddCors(options => options.AddPolicy(allowSpecificOrigins, builder => builder
     // .WithOrigins("http://localhost:3000")
     .AllowAnyOrigin()
@@ -36,6 +37,11 @@ builder.Services
     .AddFiltering();
 
 var app = builder.Build();
+
+app.UseRouting();
+app.UseMvc();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseCors(allowSpecificOrigins);
 
@@ -68,12 +74,13 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-//app.MapControllers();
 app.MapGraphQL();
 app.UseGraphQLVoyager("/graphql-voyager", new VoyagerOptions
 {
     GraphQLEndPoint = "/graphql"
 });
+
+app.MapFallbackToController("Index", "Website");
 
 using (var scope = app.Services.CreateScope())
 {
