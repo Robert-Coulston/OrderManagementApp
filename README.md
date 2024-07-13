@@ -6,34 +6,34 @@ Uses graphql for data management
 Update dotnet tools
 dotnet  tool update --global dotnet-ef
 
-Go to folder Backend
+Entity framework migrations are update. Here is an example to create the intial migration.
+On powershell command prompt, go to folder Backend and enter
 dotnet ef migrations add InitialCreate -p .\Infrastructure\ -s .\API\
 
-#Prepare publish
-Delete wwwroot folder from Backend/API
+#Prepare publish in docker
+Create folder Backend/API/wwwroot if not already exist
+Delete the contents of Backend/API/wwwroot if already exist
 Open powershell and go to folder Frontend/ordermanagement
-Note the line in package.json "postbuild": "move build ../../Backend/API/wwwroot", then run
+For production, ensure Frontend/ordermanagement/env.production is set to http://localhost:8080/graphql
+Note the line in package.json "postbuild": "shx rm -rf ../../Backend/API/wwwroot/* && shx cp -r build/* ../../Backend/API/wwwroot/"
 npm run build
-There should be folder wwwroot in Backend/API
-
-Build the docker image
+There should be folder wwwroot in Backend/API with the contents of the UI build
+Go to the ordermanagement (top level) folder
+Build the local docker image
 docker build -t 151413121110/ordermanagementapp .
 
 If the docker image already exists, from folder ordermanagementapp login to docker
 docker login
 follow the username and password prompts
-then run the command
+Push the local image to the docker hub, enter the following
 docker push 151413121110/ordermanagementapp:latest
 
-
-#Docker
-Dockerfile contains the commands to build a docker container
-open Docker Desktop and sign in with user name 151413121110
-
-For a first time create image,
-from the ordermanagementapp directory, in a terminal window type "docker build -t 151413121110/ordermanagementapp ."
-This will build the container. The first time will take a while (5 minutes or more)
-To run, ensure env.production is set to http://localhost:8080/graphql, then run the command
-docker run --rm -it -p 8080:80 151413121110/ordermanagementapp
+#Run Docker
+Open docker desktop
+From a powershell command prompt (no specific folder), enter the following
+docker run --rm -it -p 8080:8080 151413121110/ordermanagementapp
+Go to docker desktop and containers menu
+See the container status is Running
+Browser address http://localhost:8080/ will run the app
 
 
